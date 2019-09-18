@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SimpleService;
 
 namespace SimpleGrainServiceWebAPI
 {
@@ -26,6 +27,10 @@ namespace SimpleGrainServiceWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddOrleansClusterClient(Configuration).Wait();
+            var simpleServiceSection = Configuration.GetSection("SimpleService");
+            services.Configure<SimpleServiceOptions>(simpleServiceSection);
+            services.AddSingleton<ISimpleService, SimpleService.SimpleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

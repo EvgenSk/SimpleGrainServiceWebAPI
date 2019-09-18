@@ -4,6 +4,7 @@
     <LangVersion>7.1</LangVersion>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>301985d4-f7f8-47f9-9196-d41b4d8c9dd8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj" />
     <ProjectReference Include="..\Grains\Grains.csproj" />
+    <ProjectReference Include="..\SimpleService\SimpleService.csproj" />
   </ItemGroup>
 
 </Project>

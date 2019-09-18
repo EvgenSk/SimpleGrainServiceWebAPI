@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SimpleService;
 
 namespace SimpleGrainServiceWebAPI.Controllers
 {
@@ -11,15 +12,19 @@ namespace SimpleGrainServiceWebAPI.Controllers
     [ApiController]
     public class SimpleServiceController : ControllerBase
     {
-        // GET: api/SimpleService
-        [HttpGet]
-        public IEnumerable<string> Get()
+        public SimpleServiceController(ISimpleService simpleService)
         {
-            return new string[] { "value1", "value2" };
+            SimpleService = simpleService;
         }
 
+        ISimpleService SimpleService { get; }
+
+        // GET: api/SimpleService
+        [HttpGet]
+        public IEnumerable<string> Get() => new List<string> { SimpleService.StringOption };
+
         // GET: api/SimpleService/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetSimple")]
         public string Get(int id)
         {
             return "value";

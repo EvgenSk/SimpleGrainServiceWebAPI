@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace SimpleService
     {
         private SimpleServiceOptions Options { get; }
 
-        public SimpleService(SimpleServiceOptions options)
+        public SimpleService(IOptions<SimpleServiceOptions> options)
         {
-            Options = options;
+            Options = options.Value;
         }
 
         public string StringOption => Options.StringOption;
