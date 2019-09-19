@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GrainInterfaces;
+using Grains;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orleans;
 using Orleans.Hosting;
 using OrleansSimple;
+using SimpleGrainService;
 using SimpleService;
 using System.Threading.Tasks;
 
@@ -16,42 +19,18 @@ namespace SimpleGrainServiceWebAPI
 
             return new SiloHostBuilder()
                 .Configure<SimpleServiceOptions>(simpleServiceOptionsSection)
-                .UseDashboard()
+                .AddGrainService<SimpleGrainService.SimpleGrainService>()
+                .ConfigureServices(s =>
+                {
+                    s.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
+                    s.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
+                })
                 .UseLocalhostClustering()
                 .ConfigureApplicationParts(parts =>
                 {
-                    parts.AddApplicationPart(typeof(ISimple).Assembly).WithReferences();
-                    parts.AddApplicationPart(typeof(SimpleGrain).Assembly).WithReferences();
+                    parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
+                    parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
                 })
-                //.ConfigureServices((hostBuilderContext, services) =>
-                //{
-                //    hostBuilderContext.Configuration = configuration;
-                //    services
-                //    .Configure<SimpleServiceOptions>(simpleServiceOptionsSection)
-                //})
-                //            .AddGrainService<WordsAPIGrainService>()
-                //            .ConfigureServices((hostBuilderContext, services) => {
-                //                hostBuilderContext.Configuration = configuration;
-                //                services
-                //                .Configure<WordsAPIOptions>(simpleServiceOptionsSection)
-                //                .Configure<StanfordNLPClientOptions>(stanfordNLPOptionsSection)
-                //                .AddWordsAPIClient()
-                //                .AddStanfordNLPClient()
-                //                .Configure<RedisGrainStorageOptions>(cacheName, redisOptionsSection)
-                //                .Configure<MongoDBGrainStorageOptions>(storageName, mongoOptionsSection)
-                //                .AddSingleton<IWordsAPIGrainServiceClient, WordsAPIGrainServiceClient>();
-                //            })
-                //            .Configure<RedisGrainStorageOptions>(redisOptionsSection)
-                //            .Configure<MongoDBGrainStorageOptions>(mongoOptionsSection)
-                //            .AddRedisGrainStorage(cacheName)
-                //            .AddMongoDBGrainStorage(storageName)
-                //            .AddCompoundGrainStorage(compoundName, c => {
-                //                c.CacheName = cacheName;
-                //                c.StorageName = storageName;
-                //            })
-                //            .AddWordsAPIClient()
-                //            .AddStanfordNLPClient()
-
                 .Build();
         }
 

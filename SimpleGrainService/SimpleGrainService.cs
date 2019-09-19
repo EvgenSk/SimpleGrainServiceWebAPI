@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans;
+using Orleans.Concurrency;
 using Orleans.Core;
 using Orleans.Runtime;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace SimpleGrainService
 {
+    [Reentrant]
     public class SimpleGrainService : GrainService, ISimpleGrainService
     {
         readonly IGrainFactory GrainFactory;

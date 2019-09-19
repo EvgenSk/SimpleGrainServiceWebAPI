@@ -27,7 +27,7 @@ namespace SimpleGrainServiceWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //services.AddOrleansClusterClient(Configuration).Wait();
+            services.AddOrleansClusterClient(Configuration).Wait();
             var simpleServiceSection = Configuration.GetSection("SimpleService");
             services.Configure<SimpleServiceOptions>(simpleServiceSection);
             services.AddSingleton<ISimpleService, SimpleService.SimpleService>();
