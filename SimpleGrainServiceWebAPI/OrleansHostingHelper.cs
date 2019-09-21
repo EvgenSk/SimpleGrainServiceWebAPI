@@ -24,11 +24,13 @@ namespace SimpleGrainServiceWebAPI
                 {
                     s.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
                     s.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
+                    s.AddSingleton<ISimpleService, SimpleService.SimpleService>();
                 })
                 .UseLocalhostClustering()
                 .ConfigureApplicationParts(parts =>
                 {
                     parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
+                    parts.AddApplicationPart(typeof(ISimpleGrainService).Assembly).WithReferences();
                     parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
                 })
                 .Build();

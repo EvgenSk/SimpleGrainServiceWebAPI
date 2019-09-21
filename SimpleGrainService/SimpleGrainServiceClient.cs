@@ -8,7 +8,7 @@ namespace SimpleGrainService
 {
     public class SimpleGrainServiceClient : GrainServiceClient<ISimpleGrainService>, ISimpleGrainServiceClient
     {
-        protected SimpleGrainServiceClient(IServiceProvider serviceProvider)
+        public SimpleGrainServiceClient(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
         }
