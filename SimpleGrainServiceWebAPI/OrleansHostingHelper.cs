@@ -30,7 +30,6 @@ namespace SimpleGrainServiceWebAPI
                 .ConfigureApplicationParts(parts =>
                 {
                     parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
-                    parts.AddApplicationPart(typeof(ISimpleGrainService).Assembly).WithReferences();
                     parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
                 })
                 .Build();

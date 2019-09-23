@@ -15,17 +15,15 @@ namespace SimpleGrainService
     [Reentrant]
     public class SimpleGrainService : GrainService, ISimpleGrainService
     {
-        readonly IGrainFactory GrainFactory;
-        readonly ISimpleService simpleService;
+        readonly ISimpleService SimpleService;
 
-        public SimpleGrainService(IServiceProvider services, IGrainIdentity id, Silo silo, ILoggerFactory loggerFactory, IGrainFactory grainFactory)
+        public SimpleGrainService(ISimpleService simpleService, IGrainIdentity id, Silo silo, ILoggerFactory loggerFactory)
             : base(id, silo, loggerFactory)
         {
-            GrainFactory = grainFactory;
-            simpleService = services.GetRequiredService<ISimpleService>();
+            SimpleService = simpleService;
         }
 
         public Task<string> GetStringOption() =>
-            simpleService.GetStringOption();
+            SimpleService.GetStringOption();
     }
 }
