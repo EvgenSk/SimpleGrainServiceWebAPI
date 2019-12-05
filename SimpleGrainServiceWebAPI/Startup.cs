@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using SimpleService;
+using SimpleGrainService;
 
 namespace SimpleGrainServiceWebAPI
 {
@@ -28,10 +29,7 @@ namespace SimpleGrainServiceWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddOrleansClusterClient(Configuration).Wait();
-            var simpleServiceSection = Configuration.GetSection("SimpleService");
-            services.Configure<SimpleServiceOptions>(simpleServiceSection);
-            services.AddSingleton<ISimpleService, SimpleService.SimpleService>();
+            //services.AddOrleansClusterClient(Configuration).Wait();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
