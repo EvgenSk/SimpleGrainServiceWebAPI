@@ -2,17 +2,15 @@
 
   <PropertyGroup>
     <LangVersion>7.1</LangVersion>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>301985d4-f7f8-47f9-9196-d41b4d8c9dd8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Orleans.Server" Version="2.4.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="OrleansDashboard" Version="2.4.5" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="3.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+    <PackageReference Include="OrleansDashboard" Version="3.0.8" />
   </ItemGroup>
 
   <ItemGroup>
