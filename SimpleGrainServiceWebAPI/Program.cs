@@ -24,32 +24,18 @@ namespace SimpleGrainServiceWebAPI
 				var simpleServiceSection = context.Configuration.GetSection("SimpleService");
 				services.Configure<SimpleServiceOptions>(simpleServiceSection);
 				services.AddSingleton<ISimpleService, SimpleService.SimpleService>();
+				services.AddOrleansClusterClient(context.Configuration).Wait();
 			})
 			.ConfigureWebHostDefaults(webBuilder =>
 			{
 				webBuilder.UseStartup<Startup>();
-			})
-			.UseOrleans((context, siloBuilder) =>
-			{
-				var simpleServiceSection = context.Configuration.GetSection("SimpleService");
-				siloBuilder
-				.Configure<SimpleServiceOptions>(simpleServiceSection)
-				.UseLocalhostClustering()
-				.AddGrainService<SimpleGrainService.SimpleGrainService>()
-				.ConfigureServices(services =>
-				{
-					services.Configure<SimpleServiceOptions>(simpleServiceSection);
-					services.AddSingleton<ISimpleService, SimpleService.SimpleService>();
-					services.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
-					services.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
-					services.AddGrainService<SimpleGrainService.SimpleGrainService>();
-				})
-				.ConfigureApplicationParts(parts =>
-				{
-					parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
-					parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
-					parts.AddApplicationPart(typeof(ISimpleGrainService).Assembly).WithReferences();
-				});
 			});
+			//.UseOrleans((context, siloBuilder) =>
+			//{
+			//	var simpleServiceSection = context.Configuration.GetSection("SimpleService");
+			//	siloBuilder
+			//	.Configure<SimpleServiceOptions>(simpleServiceSection)
+			//	.UseSimpleGrainService();
+			//});
 	}
 }

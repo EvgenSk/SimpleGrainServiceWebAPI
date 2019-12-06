@@ -19,19 +19,7 @@ namespace SimpleGrainServiceWebAPI
 
             return new SiloHostBuilder()
                 .Configure<SimpleServiceOptions>(simpleServiceOptionsSection)
-                .AddGrainService<SimpleGrainService.SimpleGrainService>()
-                .ConfigureServices(s =>
-                {
-                    s.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
-                    s.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
-                    s.AddSingleton<ISimpleService, SimpleService.SimpleService>();
-                })
-                .UseLocalhostClustering()
-                .ConfigureApplicationParts(parts =>
-                {
-                    parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
-                    parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
-                })
+                .UseSimpleGrainService()
                 .Build();
         }
 
@@ -46,5 +34,37 @@ namespace SimpleGrainServiceWebAPI
                 .AddSingleton<IClusterClient>(client)
                 .AddSingleton<IGrainFactory>(client);
         }
+
+        public static ISiloHostBuilder UseSimpleGrainService(this ISiloHostBuilder siloHostBuilder) =>
+            siloHostBuilder
+            .AddGrainService<SimpleGrainService.SimpleGrainService>()
+            .ConfigureServices(s =>
+            {
+                s.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
+                s.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
+                s.AddSingleton<ISimpleService, SimpleService.SimpleService>();
+            })
+            .UseLocalhostClustering()
+            .ConfigureApplicationParts(parts =>
+            {
+                parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
+                parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
+            });
+
+        public static ISiloBuilder UseSimpleGrainService(this ISiloBuilder siloBuilder) =>
+            siloBuilder
+            .AddGrainService<SimpleGrainService.SimpleGrainService>()
+            .ConfigureServices(s =>
+            {
+                s.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
+                s.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
+                s.AddSingleton<ISimpleService, SimpleService.SimpleService>();
+            })
+            .UseLocalhostClustering()
+            .ConfigureApplicationParts(parts =>
+            {
+                parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
+                parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
+            });
     }
 }
