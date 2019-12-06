@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Orleans;
 using Orleans.Hosting;
-using OrleansSimple;
 using SimpleGrainService;
 using SimpleService;
 using System.Threading.Tasks;
@@ -24,29 +23,33 @@ namespace SimpleGrainServiceWebAPI
 			{
 				var simpleServiceSection = context.Configuration.GetSection("SimpleService");
 				services.Configure<SimpleServiceOptions>(simpleServiceSection);
-				//services.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
-				services.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
 				services.AddSingleton<ISimpleService, SimpleService.SimpleService>();
 			})
 			.ConfigureWebHostDefaults(webBuilder =>
 			{
 				webBuilder.UseStartup<Startup>();
 			})
-			.UseOrleans(siloBuilder =>
+			.UseOrleans((context, siloBuilder) =>
 			{
+				var simpleServiceSection = context.Configuration.GetSection("SimpleService");
 				siloBuilder
+				.Configure<SimpleServiceOptions>(simpleServiceSection)
 				.UseLocalhostClustering()
-				//.AddGrainService<SimpleGrainService.SimpleGrainService>()
+				.AddGrainService<SimpleGrainService.SimpleGrainService>()
+				.ConfigureServices(services =>
+				{
+					services.Configure<SimpleServiceOptions>(simpleServiceSection);
+					services.AddSingleton<ISimpleService, SimpleService.SimpleService>();
+					services.AddSingleton<ISimpleGrainServiceClient, SimpleGrainServiceClient>();
+					services.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
+					services.AddGrainService<SimpleGrainService.SimpleGrainService>();
+				})
 				.ConfigureApplicationParts(parts =>
 				{
 					parts.AddApplicationPart(typeof(IGrainWithSimpleService).Assembly).WithReferences();
 					parts.AddApplicationPart(typeof(GrainWithSimpleService).Assembly).WithReferences();
-					parts.AddApplicationPart(typeof(SimpleGrainService.SimpleGrainService).Assembly).WithReferences();
+					parts.AddApplicationPart(typeof(ISimpleGrainService).Assembly).WithReferences();
 				});
-			})
-			.ConfigureServices(services =>
-			{
-				services.AddSingleton<ISimpleGrainService, SimpleGrainService.SimpleGrainService>();
 			});
 	}
 }
